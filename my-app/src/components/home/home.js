@@ -14,14 +14,19 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 //Instalamos un App Bar de react material UI// 
+
+
 const drawerWidth = 240;
 const navItems = ['Login', 'Contact'];
 
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  
+
+  const navigate = useNavigate();
+
   const headingStyle1 = {
     color: 'blue',
     fontSize: '40px',
@@ -38,11 +43,13 @@ function DrawerAppBar(props) {
         Manual de Usuario
       </Typography>
       <Divider />
+    
       <List>
+
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
+            <ListItemButton onClick={e=>navigate('/' +item)} sx={{ textAlign: 'center' }}>
+              <ListItemText primary={"Hola"} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -76,7 +83,7 @@ function DrawerAppBar(props) {
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
+              <Button onClick={e=>navigate('/' +item)} key={item} sx={{ color: '#fff' }}>
                 {item}
               </Button>
             ))}
@@ -156,10 +163,7 @@ function DrawerAppBar(props) {
 }
 
 DrawerAppBar.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
+ 
   window: PropTypes.func,
 };
 
