@@ -5,10 +5,10 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 
 const Note = (props) => {
-
+  if (!props.note) {
+}
   const urlDelApi = "http://localhost:8080/api";
   const [notes, setNotes] = React.useState();
-
 
   const callAPINotes = (event) => {
     axios
@@ -55,11 +55,32 @@ const Note = (props) => {
       });
   };
 
+  const deleteNoteToDB = () => {
+    const userId = "usuario_actual"; 
+    if (props.note.UserID === userId) {
+      axios
+        .delete(`${urlDelApi}/notas/${props.note.NoteID}`)
+        .then(function (response) {
+          callAPINotes();
+        })
+        .catch(function (error) {
+          console.log("Error al eliminar nota:", error);
+        });
+    } else {
+      console.log("No tienes permisos para eliminar esta nota.");
+    }
+  };
+
   const handleEditClick = () => {
     
       editNoteToDB();
   }
 
+  const handleDeleteClick = () => {
+    deleteNoteToDB();
+  };
+
+  
   return (
     <div className="Note" data-testid="Note">
       
