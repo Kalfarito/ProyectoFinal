@@ -17,7 +17,6 @@ const App = () => {
           <Button color="inherit" href="Login">Login</Button>
         </Toolbar>
       </AppBar>
-      {/* Contenido de la aplicación */}
       <div style={{ padding: '20px', marginTop: '60px' }}>
       <h2>Grupo Progra 3</h2>
       <p><strong> + JOSE LEANDRO RUA RAMIREZ + JAVIER ALBERTO GARCIA SOLIS + ARMANDO ALONSO MONTIEL MONTES </strong></p>
