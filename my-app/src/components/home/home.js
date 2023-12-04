@@ -1,121 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import { AppBar, Toolbar, Typography, Button, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-//Instalamos un App Bar de react material UI// 
 
-
-const drawerWidth = 240;
-const navItems = ['Login', 'Contact'];
-
-function DrawerAppBar(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const navigate = useNavigate();
-
-  const headingStyle1 = {
-    color: 'blue',
-    fontSize: '40px',
-    textAlign: 'center',
-  };
-
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
-
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        Manual de Usuario
-      </Typography>
-      <Divider />
-    
-      <List>
-
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton onClick={e=>navigate('/' +item)} sx={{ textAlign: 'center' }}>
-              <ListItemText primary={"Hola"} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
+const App = () => {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar component="nav">
+    <div>
+      <AppBar position="static">
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-            
-          >
+          <IconButton size="large" edge="start" color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            Manual de Usuario
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Menu de Usuario
           </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button onClick={e=>navigate('/' +item)} key={item} sx={{ color: '#fff' }}>
-                {item}
-              </Button>
-            ))}
-          </Box>
+          <Button color="inherit" href="Login">Login</Button>
         </Toolbar>
       </AppBar>
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
-      <Box component="main" sx={{ p: 3 }}>
-        <Toolbar />
-        <Typography>
-        <h1><p><headingStyle1><strong> App de notas</strong></headingStyle1></p></h1> 
-        <div>
-        <a href="Login">Login</a>
-
-        </div>
-  <h2>Grupo Progra 3</h2>
+      {/* Contenido de la aplicación */}
+      <div style={{ padding: '20px', marginTop: '60px' }}>
+      <h2>Grupo Progra 3</h2>
       <p><strong> + JOSE LEANDRO RUA RAMIREZ + JAVIER ALBERTO GARCIA SOLIS + ARMANDO ALONSO MONTIEL MONTES </strong></p>
   <h3>Guía de métodos para el RestController:</h3>
   <ol>
@@ -156,15 +60,8 @@ function DrawerAppBar(props) {
       <p><strong> "/api/DeleteNbyid" (DELETE):</strong> Descripción: Elimina una nota específica de la base de datos según el ID proporcionado.</p>
     </li>
   </ol>
-      </Typography>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
-}
-
-DrawerAppBar.propTypes = {
- 
-  window: PropTypes.func,
 };
-
-export default DrawerAppBar;
+export default App;
