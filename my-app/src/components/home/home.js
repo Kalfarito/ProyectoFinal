@@ -12,7 +12,7 @@ const App = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Menu de Usuario
+            Manual de Usuario
           </Typography>
           <Button color="inherit" href="Login">Login</Button>
         </Toolbar>
