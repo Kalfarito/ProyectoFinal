@@ -6,21 +6,23 @@ import axios from "axios";
 
 const Note = (props) => {
   if (!props.note) {
-}
+
+  }
+
   const urlDelApi = "http://localhost:8080/api";
   const [notes, setNotes] = React.useState();
 
+
   const callAPINotes = (event) => {
     axios
-      .get(`${urlDelApi}/notas`) //cambio direccion
+      .get(`${urlDelApi}/notas`) //cambio de direccion
       .then(function (response) {
-        // handle success
         console.log(response);
         console.log(response.data.records);
         console.log(response.statusText);
         setNotes(response.data.records);
       })
-      .catch(function (error) {
+       .catch(function (error) {
         // handle error
         console.log(error);
       })
@@ -29,11 +31,10 @@ const Note = (props) => {
       });
   };
 
-
   const [formData, setFormData] = useState({
-    UserID: props.note.UserID || "",
-    Title: props.note.Title || "",
-    Content: props.note.Content || "",
+    UserID: props.note ? props.note.UserID || "" : "",
+    Title: props.note ? props.note.Title || "" : "",
+    Content: props.note ? props.note.Content || "" : "",
   });
 
   const handleChange = (e) => {
@@ -46,14 +47,14 @@ const Note = (props) => {
 
   const editNoteToDB = () => {
     axios
-      .put(`${urlDelApi}/notas/${props.note.NoteID}`, formData)
-      .then(function (response) {
-        callAPINotes();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+    .put(`${urlDelApi}/notas/${props.note.NoteID}`, formData)
+    .then(function (response) {
+      callAPINotes();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
 
   const deleteNoteToDB = () => {
     const userId = "usuario_actual"; 
@@ -72,57 +73,58 @@ const Note = (props) => {
   };
 
   const handleEditClick = () => {
+    editNoteToDB();
+}
+
+const handleDeleteClick = () => {
+  deleteNoteToDB();
+};
+
+
+return (
+  <div className="Note" data-testid="Note">
     
-      editNoteToDB();
-  }
-
-  const handleDeleteClick = () => {
-    deleteNoteToDB();
-  };
-
-  
-  return (
-    <div className="Note" data-testid="Note">
-      
-      <TextField
-        id="outlined-basic"
-        name="id"
-        defaultValue={formData.UserID}
-        onChange={handleChange}
-        variant="standard"
-      />
-      <TextField
-        id="outlined-basic"
-        name="Title"
-        defaultValue={formData.Title}
-        onChange={handleChange}
-        variant="standard"
-      />
-      <TextField
-        id="outlined-basic"
-        name="Content"
-        defaultValue={formData.Content}
-        onChange={handleChange}
-        variant="standard"
-      />
-      <br />
-      <Button color="secondary" variant="contained" onClick={handleEditClick}>
-        Editar nota
-      </Button>\
-      <Button color="secondary" variant="contained" onClick={handleEditClick}>
-        Eliminar
-      </Button>
-    </div>
-  );
+    <TextField
+      id="outlined-basic"
+      name="id"
+      defaultValue={formData.UserID}
+      onChange={handleChange}
+      variant="standard"
+    />
+    <TextField
+      id="outlined-basic"
+      name="Title"
+      defaultValue={formData.Title}
+      onChange={handleChange}
+      variant="standard"
+    />
+    <TextField
+      id="outlined-basic"
+      name="Content"
+      defaultValue={formData.Content}
+      onChange={handleChange}
+      variant="standard"
+    />
+    <br />
+    <Button color="secondary" variant="contained" onClick={handleEditClick}>
+      Editar nota
+    </Button>\
+    <Button color="secondary" variant="contained" onClick={handleDeleteClick}>
+      Eliminar
+    </Button>
+  </div>
+);
 };
 
 Note.propTypes = {
-  note: PropTypes.shape({
-    NoteID: PropTypes.number.isRequired,
-    UserID: PropTypes.string.isRequired,
-    Title: PropTypes.string.isRequired,
-    Content: PropTypes.string.isRequired,
-  }).isRequired,
+note: PropTypes.shape({
+  NoteID: PropTypes.number.isRequired,
+  UserID: PropTypes.string.isRequired,
+  Title: PropTypes.string.isRequired,
+  Content: PropTypes.string.isRequired,
+}).isRequired,
+
+}
 };
 
 export default Note;
