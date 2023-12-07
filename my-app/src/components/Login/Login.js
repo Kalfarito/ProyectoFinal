@@ -40,7 +40,7 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const urlDelApi = "http://localhost:8080/api/allUsers";
+  const urlDelApi = "http://localhost:8080/api/all/Users";
 
   const callAPIAuthenticate = (event) => {
     const data = formData;

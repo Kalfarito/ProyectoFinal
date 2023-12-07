@@ -1,99 +1,43 @@
-import React, {useEffect} from 'react';
-import PropTypes from 'prop-types';
-import styles from './main.module.css';
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Grid from "@mui/material/Grid";
-import Note from "../Note/Note";
-import axios from "axios";
+import Button from "@mui/material/Button";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import {TextareaAutosize } from '@mui/material' ;
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 
 
+const NotasId = () => {
+  const [notes, setNotes] = useState([]);
+  const [showNotes, setShowNotes] = useState(false);
 
-const Main = (props) => 
-  {
-  
-    const [formValues, setFormValues] = React.useState();
-    const [authenticated, setAuthenticated] = React.useState();
-    const [users, setUsers] = React.useState();
-    const [notes, setNotes] = React.useState();
-    const [user,setUser]= React.useState(props.user);
-  
-    const urlDelApi = "http://localhost:8080/api/note/all";
-  
-    useEffect(()=>{
-      const user=localStorage.getItem("user"); 
-      setUser(props.user);
-    },[])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const urlDelApi = "http://localhost:8080/api/all/Notes";
+        const params = {
+          id: '1',   // userId: userId, // Suponiendo que el parámetro esperado por la API es userId
+        };
+        const response = await axios.get(urlDelApi, { params });
+        setNotes(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-    const mockNotes = [
-      {
-        NoteID: 1,
-        UserID: 1,
-        Title: "Nota 1",
-        Content: "Prueba de nota local1",
-        CreatedAt: "2023-10-10 17:43:12",
-      },
-      {
-        NoteID: 2,
-        UserID: 1,
-        Title: "nota 2",
-        Content: "Prueba de nota local2",
-        CreatedAt: "2023-10-10 17:43:12",
-      },
-     
-    ];
-    
-    const onChancheInput = (event) => {
-      let name = event.target.name;
-      let value = event.target.value;
-      console.log(event);
-      console.log(name);
-      console.log(value);
-  
-      setFormValues({ ...formValues, [name]: value });
-    };
-    const callAPINotes = (event) => {
-      const params = {
-        id: '1',
-      };
-      axios
-        .get(`${urlDelApi}`,{params},  {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            // Otros encabezados si son necesarios
-          },
-        })
-        .then(function (response) {
-          console.log(response);
-          console.log(response.data.records);
-          console.log(response.statusText);
-          setNotes(response.data.records);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    };
-    
-    const callAPMockNotes = (event) => {
-      setNotes(mockNotes);
-      setNotes([...mockNotes]);
-    };
-   
-    const clearNotes = (event) => {
-      setNotes();
-    };
-   
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    if (showNotes) {
+      fetchData();
+    }
+  }, [showNotes]);
+
+  const handleShowNotes = () => {
+    setShowNotes(true);
+  };
+
+  const handleHideNotes = () => {
+    setShowNotes(false);
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -101,76 +45,64 @@ const Main = (props) =>
     const handleClose = () => {
       setAnchorEl(null);
     };
-  
-   
-    return (
-      <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Menú Principal
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
-      <h1>Bienvenido {user?.usuario}</h1>
 
-      <Grid
-          container
-          spacing={2}
-          style={{
-            inset: 0,
-            margin: "auto",
-            textAlign: "center",
-            maxWidth: "80%",
-          }}
-        >
-          <Grid item xs={12}>
-            {/* ... */} 
-          </Grid>
-          <Grid item xs={6}>
-          <h1> Blog de Notas</h1>
-            <Button onClick={callAPMockNotes} variant="contained" sx={{ mx: 2 }}>
-              Ver notas
-            </Button>
-            <Button onClick={clearNotes} color="secondary" variant="text">
-              Ocultar
-            </Button>
-          </Grid>
+  return (
+    <div  data-testid="Registro">
+      <div>
+      <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        Dashboard
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={handleClose}>
+      <a href="../perfilpersona">Profile</a>
+    </MenuItem>
+    <MenuItem onClick={handleClose}>
+      <a href="../main">Home</a>
+    </MenuItem>
+    <MenuItem onClick={handleClose}>
+      <a href="../login">Logout</a>
+    </MenuItem>
+      </Menu>
+    </div>
+      <h1>Notas por id de usuario</h1>
+
+      <Button variant="contained" onClick={handleShowNotes}>
+        Mostrar Notas
+      </Button>
+      <Button variant="contained" onClick={handleHideNotes}>
+        Ocultar Notas
+      </Button>
+
+      {showNotes && (
+        <Grid container spacing={2}>
+          {notes.map((note) => (
+            <Grid item key={note.id} xs={12} sm={6} md={4}>
+              <div>
+                <h3>{note.title}</h3>
+                <p>{note.content}</p>
+              </div>
+            </Grid>
+          ))}
         </Grid>
-        <br></br>
-        <br></br>
-        <br></br>
-        <Card id="card-home" className={styles["card-home"]}>
-          <Grid container spacing={4}>
-            {notes?.map((nota, index) => 
-            (
-              <Grid item xs={6} key={index}>
-                  <Note titulo="titulo" note={nota}>  
-                  </Note>
-              </Grid>
-            ))}
-          </Grid>
-        </Card>
-    </Box>
+      )}
+    </div>
   );
-}
-
-
-Main.propTypes = {};
-
-Main.defaultProps = {};
-
-export default Main;
+};
+export default NotasId;
 
 
 
