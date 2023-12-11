@@ -54,7 +54,7 @@ const NotasId = () => {
       <AppBar position="static" sx={{ background: '#1976D2' }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <span style={{ color: 'white' }}>Notes App</span>
+            <span style={{ color: 'white' }}></span>
           </Typography>
           <Button color="inherit" onClick={() => window.location.href = "../note"}>
             Nueva nota
