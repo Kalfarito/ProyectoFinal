@@ -5,9 +5,8 @@ import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp/SignUp";
 import Note from "./components/Note/Note"
 import Main from './components/main/main';
-
+import Prueba from './components/prueba/prueba';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 
 function App() {
   return (
@@ -20,6 +19,7 @@ function App() {
             <Route path="main" element={<Main />} />
             <Route path="SignUp" element={<SignUp />} />
             <Route path="Note" element={<Note />} />
+            <Route path="Prueba" element={<Prueba />} />
           </Routes>
         </Router>
       </div>

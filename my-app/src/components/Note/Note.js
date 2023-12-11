@@ -15,7 +15,7 @@ const Note = (props) => {
 
   const callAPINotes = (event) => {
     axios
-      .get(`${urlDelApi}/notas`) //cambio de direccion
+      .get(`${urlDelApi}/id/Note?id=2`) //cambio de direccion
       .then(function (response) {
         console.log(response);
         console.log(response.data.records);

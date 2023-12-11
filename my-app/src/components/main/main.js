@@ -4,11 +4,12 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import useId from '@mui/material/utils/useId';
+
 
 const NotasId = () => {
   const [notes, setNotes] = useState([]);
   const [showNotes, setShowNotes] = useState(false);
+  const urlDelApi = "http://localhost:8080/api/new/Note";
 
   useEffect(() => {
     const fetchData = async () => {
