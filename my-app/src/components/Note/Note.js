@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -14,7 +12,7 @@ const Note = (props) => {
   const urlDelApi = "http://localhost:8080/api/new/Note";
 
   const [user, setUser] = useState(props.user);
-  const [note, setNote] = useState({ UserID: '0', Title: '', Content: '',  token: '' });
+  const [note, setNote] = useState({ UserID: '0', Title: '', Content: '', token: '' });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -22,25 +20,6 @@ const Note = (props) => {
       ...note,
       [name]: value,
     });
-  };
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const onClickBorrar = (event) => {
-    window.location.href = '/Borrar';
-  };
-
-  const onClickEditar = (event) => {
-    window.location.href = '/Editar';
   };
 
   const handleSubmit = (event) => {
@@ -68,36 +47,36 @@ const Note = (props) => {
   const reset = () => {
     setNote({
       UserID: '',
-      title: '',
-      content: '',
+      Title: '',
+      Content: '',
     });
   };
 
   return (
-    <div className={styles.Perfilpersona} data-testid="Perfilpersona">
+    <div className={styles.Perfilpersona} data-testid="Perfilpersona" style={{ textAlign: 'center' }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             
           </Typography>
-          <Button color="inherit" component={Link} to="./perfilpersona">
-            Profile
+          <Button color="inherit" component={Link} to="./prueba">
+            
           </Button>
           <Button color="inherit" component={Link} to="./main">
-            Home
+            
           </Button>
           <Button color="inherit" component={Link} to="./login">
-            Logout
+            
           </Button>
         </Toolbar>
       </AppBar>
 
-     
-
       <h1>Perfil: {user?.usuario}</h1>
-      <form>
+
+      <form style={{ margin: '20px', maxWidth: '400px', margin: 'auto' }}>
         <TextField
           required
+          fullWidth
           id="standard-basic-"
           label="UserID"
           variant="standard"
@@ -106,46 +85,50 @@ const Note = (props) => {
           value={note.UserID}
           onChange={handleChange}
         />
-        <br />
         <TextField
           required
+          fullWidth
           id="standard-basic"
           label="Titulo"
           variant="standard"
-          name="Titulo"
+          name="Title"
           type="text"
           value={note.Title}
           onChange={handleChange}
         />
-          <TextField
+        <TextField
           required
+          fullWidth
+          multiline
+          rows={4}
           id="standard-basic"
           label="Contenido"
           variant="standard"
-          name="content"
+          name="Content"
           type="text"
           value={note.Content}
           onChange={handleChange}
         />
-        <br />
-        <br />
 
-        <Button variant="contained" name="AgregarNota" onClick={handleSubmit}>Agregar</Button>
-
-        <Button variant="contained" name="Cancelar" onClick={reset}>Cancelar</Button>
-        <br></br>
-        <h2>Eliminar/Editar Nota</h2>
-        <Button onClick={onClickBorrar} variant="contained" name="EliminarNota" type="button">Eliminar Nota</Button>
-        <Button onClick={onClickEditar} variant="contained" name="EditarNota" type="reset">Editar</Button>
-
-        <br />
+        <Button
+          variant="contained"
+          name="AgregarNota"
+          onClick={handleSubmit}
+          style={{ marginTop: '20px', marginRight: '10px' }}
+        >
+          Agregar
+        </Button>
+        <Button
+          variant="contained"
+          name="Cancelar"
+          onClick={reset}
+          style={{ marginTop: '20px' }}
+        >
+          Cancelar
+        </Button>
       </form>
-
-      <br></br>
     </div>
   );
 };
 
-Note.propTypes = {};
-Note.defaultProps = {};
 export default Note;

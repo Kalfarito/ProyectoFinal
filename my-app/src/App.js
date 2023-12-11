@@ -6,6 +6,7 @@ import SignUp from "./components/SignUp/SignUp";
 import Note from "./components/Note/Note"
 import Main from './components/main/main';
 import Prueba from './components/prueba/prueba';
+import BorrarNota from './components/BorrarNota/BorrarNota';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="SignUp" element={<SignUp />} />
             <Route path="Note" element={<Note />} />
             <Route path="Prueba" element={<Prueba />} />
+            <Route path="BorrarNota" element={<BorrarNota />} />
           </Routes>
         </Router>
       </div>

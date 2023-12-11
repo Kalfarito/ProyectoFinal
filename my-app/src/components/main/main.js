@@ -59,8 +59,8 @@ const NotasId = () => {
           <Button color="inherit" onClick={() => window.location.href = "../note"}>
             Nueva nota
           </Button>
-          <Button color="inherit" onClick={() => window.location.href = "../main"}>
-            Home
+          <Button color="inherit" onClick={() => window.location.href = "../borrarNota"}>
+            Eliminar nota
           </Button>
           <Button color="inherit" onClick={() => window.location.href = "../login"}>
             Logout
