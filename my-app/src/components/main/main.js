@@ -4,12 +4,13 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 const NotasId = () => {
   const [notes, setNotes] = useState([]);
   const [showNotes, setShowNotes] = useState(false);
-  const urlDelApi = "http://localhost:8080/api/new/Note";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,46 +40,35 @@ const NotasId = () => {
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <div  data-testid="Registro">
-      <div>
-      <Button
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-        Dashboard
-      </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem onClick={handleClose}>
-      <a href="../perfilpersona">Profile</a>
-    </MenuItem>
-    <MenuItem onClick={handleClose}>
-      <a href="../main">Home</a>
-    </MenuItem>
-    <MenuItem onClick={handleClose}>
-      <a href="../login">Logout</a>
-    </MenuItem>
-      </Menu>
-    </div>
+    <div data-testid="Registro">
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+
+          </Typography>
+          <Button color="inherit" onClick={() => window.location.href = "../note"}>
+            Nueva nota
+          </Button>
+          <Button color="inherit" onClick={() => window.location.href = "../main"}>
+            Home
+          </Button>
+          <Button color="inherit" onClick={() => window.location.href = "../login"}>
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+
       <h1>Notas por id de usuario</h1>
 
       <Button variant="contained" onClick={handleShowNotes}>
@@ -103,10 +93,5 @@ const NotasId = () => {
     </div>
   );
 };
+
 export default NotasId;
-
-
-
-
-
-

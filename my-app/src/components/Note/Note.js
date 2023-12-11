@@ -1,130 +1,151 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import axios from 'axios';
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import axios from "axios";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
+import styles from './Note.module.css';
 
 const Note = (props) => {
-  if (!props.note) {
+  const urlDelApi = "http://localhost:8080/api/new/Note";
 
-  }
+  const [user, setUser] = useState(props.user);
+  const [note, setNote] = useState({ UserID: '0', Title: '', Content: '',  token: '' });
 
-  const urlDelApi = "http://localhost:8080/api";
-  const [notes, setNotes] = React.useState();
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setNote({
+      ...note,
+      [name]: value,
+    });
+  };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
-  const callAPINotes = (event) => {
-    axios
-      .get(`${urlDelApi}/id/Note?id=2`) //cambio de direccion
-      .then(function (response) {
-        console.log(response);
-        console.log(response.data.records);
-        console.log(response.statusText);
-        setNotes(response.data.records);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const onClickBorrar = (event) => {
+    window.location.href = '/Borrar';
+  };
+
+  const onClickEditar = (event) => {
+    window.location.href = '/Editar';
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    axios.post(
+      `${urlDelApi}?UserID=${note.UserID}&Title=${note.Title}&Content=${note.Content}&token=${note.token}`,
+      null,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
+      .then(response => {
+        console.log('Post success');
+        console.log('Response: ', response.data);
       })
-       .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
+      .catch(error => {
+        console.error('Error:', error);
       });
   };
 
-  const [formData, setFormData] = useState({
-    UserID: props.note ? props.note.UserID || "" : "",
-    Title: props.note ? props.note.Title || "" : "",
-    Content: props.note ? props.note.Content || "" : "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+  const reset = () => {
+    setNote({
+      UserID: '',
+      title: '',
+      content: '',
     });
   };
- 
 
-  const editNoteToDB = () => {
-    axios
-    .put(`${urlDelApi}/notas/${props.note.NoteID}`, formData)
-    .then(function (response) {
-      callAPINotes();
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  return (
+    <div className={styles.Perfilpersona} data-testid="Perfilpersona">
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            
+          </Typography>
+          <Button color="inherit" component={Link} to="./perfilpersona">
+            Profile
+          </Button>
+          <Button color="inherit" component={Link} to="./main">
+            Home
+          </Button>
+          <Button color="inherit" component={Link} to="./login">
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
 
+     
 
-  const deleteNoteToDB = () => {
-    const userId = "usuario_actual"; 
-    if (props.note.UserID === userId) {
-      axios
-        .delete(`${urlDelApi}/notas/${props.note.NoteID}`)
-        .then(function (response) {
-          callAPINotes();
-        })
-        .catch(function (error) {
-          console.log("Error al eliminar nota:", error);
-        });
-    } else {
-      console.log("No tienes permisos para eliminar esta nota.");
-    }
-  };
+      <h1>Perfil: {user?.usuario}</h1>
+      <form>
+        <TextField
+          required
+          id="standard-basic-"
+          label="UserID"
+          variant="standard"
+          name="UserID"
+          type="text"
+          value={note.UserID}
+          onChange={handleChange}
+        />
+        <br />
+        <TextField
+          required
+          id="standard-basic"
+          label="Titulo"
+          variant="standard"
+          name="Titulo"
+          type="text"
+          value={note.Title}
+          onChange={handleChange}
+        />
+          <TextField
+          required
+          id="standard-basic"
+          label="Contenido"
+          variant="standard"
+          name="content"
+          type="text"
+          value={note.Content}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
 
-  const handleEditClick = () => {
-    editNoteToDB();
-}
+        <Button variant="contained" name="AgregarNota" onClick={handleSubmit}>Agregar</Button>
 
-const handleDeleteClick = () => {
-  deleteNoteToDB();
+        <Button variant="contained" name="Cancelar" onClick={reset}>Cancelar</Button>
+        <br></br>
+        <h2>Eliminar/Editar Nota</h2>
+        <Button onClick={onClickBorrar} variant="contained" name="EliminarNota" type="button">Eliminar Nota</Button>
+        <Button onClick={onClickEditar} variant="contained" name="EditarNota" type="reset">Editar</Button>
+
+        <br />
+      </form>
+
+      <br></br>
+    </div>
+  );
 };
 
-
-return (
-  <div className="Note" data-testid="Note">
-    
-    <TextField
-      id="outlined-basic"
-      name="id"
-      defaultValue={formData.UserID}
-      onChange={handleChange}
-      variant="standard"
-    />
-    <TextField
-      id="outlined-basic"
-      name="Title"
-      defaultValue={formData.Title}
-      onChange={handleChange}
-      variant="standard"
-    />
-    <TextField
-      id="outlined-basic"
-      name="Content"
-      defaultValue={formData.Content}
-      onChange={handleChange}
-      variant="standard"
-    />
-    <br />
-    <Button color="secondary" variant="contained" onClick={handleEditClick}>
-      Editar nota
-    </Button>\
-    <Button color="secondary" variant="contained" onClick={handleDeleteClick}>
-      Eliminar
-    </Button>
-  </div>
-);
-};
-
-Note.propTypes = {
-note: PropTypes.shape({
-  NoteID: PropTypes.number.isRequired,
-  UserID: PropTypes.string.isRequired,
-  Title: PropTypes.string.isRequired,
-  Content: PropTypes.string.isRequired,
-}).isRequired,
-
-}
-};
-
+Note.propTypes = {};
+Note.defaultProps = {};
 export default Note;
