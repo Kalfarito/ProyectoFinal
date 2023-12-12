@@ -7,29 +7,21 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
 import axios from "axios";
+import User from "../User/User";
 import Note from "../Note/Note";
-//token de user 9 2aa114a9f48aa678de13fa158fd8daa7349ea1b70087cbeed5a6430e3954a2c5
+
 const Prueba = () => {
-  //constante
   const [data, setData] = React.useState(
-    " "
+    "Ejemplo React, estados y llamados a API"
   );
   const [formValues, setFormValues] = React.useState();
-  
+  const [authenticated, setAuthenticated] = React.useState();
   const [users, setUsers] = React.useState();
   const [notes, setNotes] = React.useState();
 
-  const urlDelApi = "http://localhost:8080";
+  // URL DEL API
+  const urlDelApi = "http://localhost:8080/api/new/Note";
 
-
-  // ES6
-
-  const onClickBtn = () => {
-    console.log("click", formValues);
-    let nombre = "Sergio";
-
-   
-  };
 
   const onChancheInput = (event) => {
     let name = event.target.name;
@@ -41,12 +33,12 @@ const Prueba = () => {
     setFormValues({ ...formValues, [name]: value });
   };
 
+// LLAMA AL API
   const callAPINotes = (event) => {
     axios
-      .get(`${urlDelApi}/api/id/Note?id=1`) //cambio direccion
+      .post(`${urlDelApi}`)
       .then(function (response) {
-        // handle succes
-        console.error('hola');
+        // handle success
         console.log(response);
         console.log(response.data.records);
         console.log(response.statusText);
@@ -60,46 +52,22 @@ const Prueba = () => {
         // always executed
       });
   };
-  
+
   const clearNotes = (event) => {
     setNotes();
   };
 
-  const callAPIAuthenticate = (event) => {
-    const data = formValues;
-
-    // ("/records/categories?filter=id,gt,1&filter=id,lt,3");
-    console.log("data");
-    axios
-      .get(
-        `${urlDelApi}/Users?filter=Username,eq,${formValues.usuario}&filter=Password,eq,${formValues.password}`
-      )
-      .then(function (response) {
-        // handle success
-        console.log("data", response.data.records);
-        setUsers(response.data.records);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });
-  };
 
 
-/* tarea de insertar en el api */
+// COSNT PARA LA CREACION DEL INSERT EN LA BD CON EL API
     const [formData, setFormData] = useState({
-      UserID3: '',
+      UserID: '',
       Title: '',
       Content: ''
     });
+
     const handleChange = (e) => {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value
-      });
+      setFormData({...formData,[e.target.name]: e.target.value});
     };
 
 
@@ -113,21 +81,21 @@ const Prueba = () => {
 
     const insertNoteToDB2 = () => {
       axios
-      .post(`${urlDelApi}/api/new/Note`, formData)
+      .post(`${urlDelApi}`, formData)
       .then(function (response) {
-       
+        // calling reset action
         handleReset();
       })
         .then(function (response) {
-          
+          // handle success
           callAPINotes();
         })
         .catch(function (error) {
-          
+          // handle error
           console.log(error);
         })
         .finally(function () {
-          
+          // always executed
         });
     };
 
@@ -135,9 +103,6 @@ const Prueba = () => {
       e.preventDefault();
       insertNoteToDB2(formData);
     };
-
-
-   
   return (
     <div className={styles.Home}>
       <h1>{data}</h1>
@@ -151,69 +116,67 @@ const Prueba = () => {
           maxWidth: "80%",
         }}
       >
-      
-       
-        <Grid item xs={6}>
-          <h2>insertar en el API y base de datos</h2>
-          <p>
-            {" "}
-            
-          </p> 
-        
-
-        
-          <Grid item xs={3} style={{}}>
-          <form onSubmit={handleSubmit}>
-        <TextField
-             type="text"
-             name="UserID"
-            required
-            label="UserID"
-            onChange={handleChange}
+        <Grid item xs={12}>
+          <h1>Autentiacion básica</h1>
+          <TextField
+            id="outlined-basic"
+            name="usuario"
+            label="Outlined"
+            onChange={onChancheInput}
             variant="standard"
           />
-        <br />
-
-<TextField
-            type="text"
-            name="Title"
-            value={formData.Title}
-            onChange={handleChange}
-            label="Titulo"
+          <TextField
+            id="outlined-basic"
+            name="password"
+            type="password"
+            onChange={onChancheInput}
+            label="Outlined"
             variant="standard"
           />
-<br />
-
-<TextField
-           name="Content"
-           value={formData.Content}
-           onChange={handleChange}
-            label="informacion "
-            variant="outlined"
-            
-          />
-<br /><br />
-<Button  type="submit" variant="contained"color="success" sx={{ mx: 2 }}>
-            Insertar
-          </Button>
-          </form>
-          </Grid>
-
-          <Button onClick={callAPINotes} variant="contained" sx={{ mx: 3 }}>
-            Llamar API
-          </Button>
-          <br></br><br></br>
-          <Button onClick={clearNotes} color="secondary" variant="text">
-            Limpiar
-          </Button>
+          <br/><br/><br/>
         </Grid>
-        
-        
+
+
+      <Grid item xs={5}>
+          <h2>Insertar Nota en base de datos</h2>
+          <Grid item xs={2} style={{}}>
+          
+            <form onSubmit={handleSubmit}>
+              <ul>
+                <label for="ID">ID:</label>
+                <input type="text"name="UserID" value={formData.UserID} onChange={handleChange}/>
+                <br/><br/>
+
+                <label for="Titulo">Título:</label>
+                <input type="text"name="Title" value={formData.Title} onChange={handleChange}/>
+                <br/><br/>
+
+                <label for="Contenido">Contenido:</label>
+                <input type="textarea"name="Content" value={formData.Content} onChange={handleChange}/>
+                <br/><br/>
+                <Button onClick={insertNoteToDB2} type="submit" variant="contained" sx={{ mx: 2 }}>Insertar API</Button>
+              </ul>
+            </form>
+      </Grid>
+        </Grid>
+
+        <Grid item xs={6} style={{}}>
+       
+         
+          <Button onClick={clearNotes} color="secondary" variant="text">Limpiar</Button>
+          <br></br><br></br><br></br>
+
+      
+          <Button onClick={callAPINotes} variant="contained" sx={{ mx: 3 }}>Llamar API RED</Button>
+          <Button onClick={clearNotes} color="secondary" variant="text">Limpiar</Button>
+        </Grid>
+
+        <Grid item xs={12}>
+          {" "}
+        </Grid>
       </Grid>
 
-      <Card id="card-home" className={styles["card-home"]}>
-        {console.log("por aca ando")}
-
+      <Card id="card-home" className={styles["card-home"]}>{console.log("por aca ando")}
         <Grid container spacing={2}>
           {notes?.map((nota, index) => {
             return (
@@ -230,7 +193,5 @@ const Prueba = () => {
 };
 
 Prueba.propTypes = {};
-
 Prueba.defaultProps = {};
-
 export default Prueba;
