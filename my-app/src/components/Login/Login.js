@@ -22,85 +22,47 @@ const Login = () => {
   });
 
 
-  const mockUser = {
-    usuario: 'admin',
-    password:'admin',
-    };
-
-  
-
-  const callAPMockUsers = (event) => {
-    setFormData(mockUser);
-    setFormData([...mockUser]);
-
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const urlDelApi = "http://localhost:8080/api/all/Users";
+  const urlDelApi = "http://localhost:8080/api/login";
 
   const callAPIAuthenticate = (event) => {
-    const data = formData;
-    console.log("data");
+    event.preventDefault();
+  
+    const data = {
+      UserName: formData.usuario,
+      UserPassword: formData.password,
+    };
+  
     axios
-      .get(
-        `${urlDelApi}/users?filter=Nombre_Usuario,eq,${formData.usuario,
-          {
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*',
-            },
-          }
-        }&filter=Contraseña,eq,${formData.password,
-          {
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*',
-            },
-          }}`
-      
-        )
+    .post(urlDelApi,formData, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       .then(function (response) {
-        // handle success
         console.log("data", response.data.records);
-       localStorage.setItem("user",JSON.stringify(response.data.records[0]));
-       window.location.href="../main/"
+        //localStorage.setItem("user", JSON.stringify(response.data.records[0]));
+        window.location.href = "../main/";
       })
       .catch(function (error) {
-        // handle error
         console.log(error);
-      })
-      .finally(function () {
-        // always executed
-       
       });
-  };
-
-  const onClickBtn = () => {
-    console.log("click", formData);
-
-    if (
-      mockUser.usuario === formData.usuario &&
-      mockUser.password === formData.password
-    ) {
-      console.log("Usuario correcto");
       
-     window.location.href="../main/"
-    } else {
-      console.log("Usuario incorrecto");
-      alert("Ingrese un usuario y contraseña validos para continuar")
-    }
-    
   };
+  
 
-  const reset = () =>{
-    setFormData(''); 
-  }
+
+  
+
+  const reset = () => {
+    setFormData({ usuario: '', password: '' });
+  };
+  
   const defaultTheme = createTheme();
   
   
@@ -154,7 +116,7 @@ const Login = () => {
 
           <Button type="submit" fullWidth variant="contained" 
           sx={{ mt: 3, mb: 2 }} name="btnIngresar" 
-          onClick={onClickBtn}>Iniciar Sesion
+          onClick={callAPIAuthenticate}>Iniciar Sesion
           </Button>
      
           <Grid container>
@@ -179,4 +141,3 @@ const Login = () => {
 Login.propTypes = {};
 
 export default Login;
-
