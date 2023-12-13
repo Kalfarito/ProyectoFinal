@@ -48,15 +48,12 @@ const Prueba = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(urlDelApi, {
+      const response = await fetch( `${urlDelApi}?UserID=1&Title=tony&Content=conte&token=123`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          title: state.title,
-          content: state.content,
-        }),
+       
       });
 
       if (response.ok) {

@@ -39,7 +39,7 @@ const Registro = () => {
   };
   
 
-  const urlDelApi = "http://localhost:8080/api/newuser";
+  const urlDelApi = "http://localhost:8080/api/new/user";
   const handleSubmit = (e) => {
     axios
 

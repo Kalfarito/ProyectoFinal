@@ -37,8 +37,8 @@ const Login = () => {
         `${urlDelApi}?username=${formData.usuario}&password=${formData.password}`
       )
       .then(function (response) {
-        console.log("data", response.data.records);
-        // localStorage.setItem("user", JSON.stringify(response.data.records[0]));
+        console.log("data", response);
+         localStorage.setItem("user", JSON.stringify(response.data));
         window.location.href = "../main/";
       })
       .catch(function (error) {
