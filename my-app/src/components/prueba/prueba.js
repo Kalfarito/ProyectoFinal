@@ -125,7 +125,7 @@ const Prueba = () => {
           </Grid>
         </Grid>
 
-        {/* Resto del código... */}
+        {/* Resto del código.. */}
       </Grid>
 
       <Card id="card-home" className={styles["card-home"]}>
