@@ -6,6 +6,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Note from "../Note/Note";
 
+
 const Prueba = () => {
   const [state, setState] = useState({
     data: "Ejemplo React, estados y llamados a API",

@@ -1,132 +1,166 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import styles from "./Note.module.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
-import styles from './Note.module.css';
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
 
-const Note = (props) => {
+const Note = () => {
+  const [state, setState] = useState({
+    formValues: {},
+    authenticated: null,
+    users: null,
+    notes: null,
+    title: "",
+    content: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      formValues: {
+        ...prevState.formValues,
+        [name]: value,
+      },
+    }));
+  };
+
+  const handleTitleChange = (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      title: event.target.value,
+    }));
+  };
+
+  const handleContentChange = (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      content: event.target.value,
+    }));
+  };
+
   const urlDelApi = "http://localhost:8080/api/new/Note";
 
-  const [user, setUser] = useState(props.user);
-  const [note, setNote] = useState({ UserID: '0', Title: '', Content: '', token: '' });
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setNote({
-      ...note,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (event) => {
+  const handleNoteSubmit = async (event) => {
     event.preventDefault();
 
-    axios.post(
-      `${urlDelApi}?UserID=${note.UserID}&Title=${note.Title}&Content=${note.Content}&token=${note.token}`,
-      null,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
-    )
-      .then(response => {
-        console.log('Post success');
-        console.log('Response: ', response.data);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  };
+    try {
+      const response = await fetch(
+        `${urlDelApi}?UserID=1&Title=tony&Content=conte&token=123`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-  const reset = () => {
-    setNote({
-      UserID: '',
-      Title: '',
-      Content: '',
-    });
+      if (response.ok) {
+        alert("Nota enviada exitosamente");
+        // Realiza acciones adicionales si es necesario
+      } else {
+        alert.error(
+          "Error al enviar la nota",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      alert.error("Error general al enviar la nota", error);
+    }
   };
 
   return (
-    <div className={styles.Perfilpersona} data-testid="Perfilpersona" style={{ textAlign: 'center' }}>
+    <div className={styles.Home}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            
+          <Typography variant="h6" style={{ flexGrow: 1, textAlign: 'center' }}>
           </Typography>
-          <Button color="inherit" component={Link} to="./prueba">
-            
-          </Button>
-          <Button color="inherit" component={Link} to="./main">
-            
-          </Button>
-          <Button color="inherit" component={Link} to="./login">
-            
+          <Button color="inherit" onClick={() => window.location.href = "../main"}>
+            Menu
           </Button>
         </Toolbar>
       </AppBar>
 
-      <h1>Perfil: {user?.usuario}</h1>
+      <Grid
+        container
+        spacing={2}
+        style={{
+          justifyContent: "flex-end",
+          alignItems: "center",
+          height: "70vh",
+        }}
+      >
+        <Grid item xs={4.5} style={{ margin: "0 auto" }}>
+          <Paper elevation={10} style={{ padding: "20px", width: "400px" }}>
+            <h2 style={{ textAlign: "center" }}>Insertar Nota en base de datos</h2>
+            <form onSubmit={handleNoteSubmit}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <TextField
+                  label="ID"
+                  variant="outlined"
+                  size="small"
+                  name="UserID"
+                  value={state.formValues.UserID}
+                  onChange={handleChange}
+                  style={{ marginBottom: '8px' }}
+                />
+              </div>
+              <br />
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <TextField
+                  label="Título"
+                  variant="outlined"
+                  size="small"
+                  name="Title"
+                  value={state.formValues.Title}
+                  onChange={handleChange}
+                  style={{ marginBottom: '8px' }}
+                />
+              </div>
+              <br />
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <TextField
+                  label="Contenido"
+                  variant="outlined"
+                  size="small"
+                  name="Content"
+                  value={state.formValues.Content}
+                  onChange={handleChange}
+                  multiline
+                  rows={4}
+                  style={{ marginBottom: '8px' }}
+                />
+              </div>
+              <br />
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ mx: 2 }}
+              >
+                Insertar
+              </Button>
+            </form>
+          </Paper>
+        </Grid>
+      </Grid>
 
-      <form style={{ margin: '20px', maxWidth: '400px', margin: 'auto' }}>
-        <TextField
-          required
-          fullWidth
-          id="standard-basic-"
-          label="UserID"
-          variant="standard"
-          name="UserID"
-          type="text"
-          value={note.UserID}
-          onChange={handleChange}
-        />
-        <TextField
-          required
-          fullWidth
-          id="standard-basic"
-          label="Titulo"
-          variant="standard"
-          name="Title"
-          type="text"
-          value={note.Title}
-          onChange={handleChange}
-        />
-        <TextField
-          required
-          fullWidth
-          multiline
-          rows={4}
-          id="standard-basic"
-          label="Contenido"
-          variant="standard"
-          name="Content"
-          type="text"
-          value={note.Content}
-          onChange={handleChange}
-        />
-
-        <Button
-          variant="contained"
-          name="AgregarNota"
-          onClick={handleSubmit}
-          style={{ marginTop: '20px', marginRight: '10px' }}
-        >
-          Agregar
-        </Button>
-        <Button
-          variant="contained"
-          name="Cancelar"
-          onClick={reset}
-          style={{ marginTop: '20px' }}
-        >
-          Cancelar
-        </Button>
-      </form>
+      <Card id="card-home" className={styles["card-home"]}>
+        <Grid container spacing={2}>
+          {state.notes?.map((nota, index) => {
+            return (
+              <Grid item xs={4} key={index}>
+                <Note titulo="titulo" note={nota}></Note>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Card>
     </div>
   );
 };

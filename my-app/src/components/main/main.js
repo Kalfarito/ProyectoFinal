@@ -93,26 +93,21 @@ const NotasId = () => {
 
       {!showNotes && hovered && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <p
-            style={{
-              cursor: 'pointer',
-              fontSize: '24px',
-              fontWeight: 'bold',
-              color: 'black',
-              textDecoration: 'underline',
-            }}
-            onClick={handleShowNotes}
-            onMouseEnter={handleHoverEnter}
-            onMouseLeave={handleHoverLeave}
-          >
-            Mostrar Notas
-          </p>
+          <Paper elevation={3} style={{ padding: '20px', width: '300px', margin: '0 auto' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black' }}>
+              Las notas están ocultas.
+            </Typography>
+          </Paper>
         </div>
       )}
 
       {!showNotes && !hovered && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <p style={{ fontSize: '28px', fontWeight: 'bold', color: 'black' }}>Las notas están ocultas.</p>
+          <Paper elevation={3} style={{ padding: '20px', width: '300px', margin: '0 auto' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black' }}>
+              Las notas están ocultas.
+            </Typography>
+          </Paper>
         </div>
       )}
     </div>
