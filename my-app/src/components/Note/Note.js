@@ -51,7 +51,7 @@ const Note = () => {
 
     try {
       const response = await fetch(
-        `${urlDelApi}?UserID=1&Title=tony&Content=conte&token=123`,
+        `${urlDelApi}?UserID=&Title=&Content=&token=`,
         {
           method: "POST",
           headers: {
@@ -64,14 +64,14 @@ const Note = () => {
         alert("Nota enviada exitosamente");
         // Realiza acciones adicionales si es necesario
       } else {
-        alert.error(
+        console.error(
           "Error al enviar la nota",
           response.status,
           response.statusText
         );
       }
     } catch (error) {
-      alert.error("Error general al enviar la nota", error);
+      console.error("Error general al enviar la nota", error);
     }
   };
 

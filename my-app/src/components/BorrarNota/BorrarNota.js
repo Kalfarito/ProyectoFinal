@@ -45,7 +45,7 @@ const BorrarNota = () => {
     }));
   };
 
-  const urlDelApi = "http://localhost:8080/api/new/Note";
+  const urlDelApi = "http://localhost:8080/api/Delete/Note";
 
   const handleNoteSubmit = async (event) => {
     event.preventDefault();

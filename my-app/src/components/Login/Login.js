@@ -38,8 +38,8 @@ const Login = () => {
       )
       .then(function (response) {
         console.log("data", response);
-         localStorage.setItem("user", JSON.stringify(response.data));
-        window.location.href = "../main/";
+        localStorage.setItem("user", JSON.stringify(response.data));
+         window.location.href = "../main/";
       })
       .catch(function (error) {
         console.log(error);
