@@ -1,111 +1,78 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
 import styles from "./prueba.module.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import { useState } from "react";
-import axios from "axios";
-import User from "../User/User";
 import Note from "../Note/Note";
 
 const Prueba = () => {
-  const [data, setData] = React.useState(
-    "Ejemplo React, estados y llamados a API"
-  );
-  const [formValues, setFormValues] = React.useState();
-  const [authenticated, setAuthenticated] = React.useState();
-  const [users, setUsers] = React.useState();
-  const [notes, setNotes] = React.useState();
+  const [state, setState] = useState({
+    data: "Ejemplo React, estados y llamados a API",
+    formValues: {},
+    authenticated: null,
+    users: null,
+    notes: null,
+    title: '',
+    content: '',
+  });
 
-  // URL DEL API
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      formValues: {
+        ...prevState.formValues,
+        [name]: value,
+      },
+    }));
+  };
+
+  const handleTitleChange = (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      title: event.target.value,
+    }));
+  };
+
+  const handleContentChange = (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      content: event.target.value,
+    }));
+  };
+
   const urlDelApi = "http://localhost:8080/api/new/Note";
 
+  const handleNoteSubmit = async (event) => {
+    event.preventDefault();
 
-  const onChancheInput = (event) => {
-    let name = event.target.name;
-    let value = event.target.value;
-    console.log(event);
-    console.log(name);
-    console.log(value);
-
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-// LLAMA AL API
-  const callAPINotes = (event) => {
-    axios
-      .post(`${urlDelApi}`)
-      .then(function (response) {
-        // handle success
-        console.log(response);
-        console.log(response.data.records);
-        console.log(response.statusText);
-        setNotes(response.data.records);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
+    try {
+      const response = await fetch(urlDelApi, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: state.title,
+          content: state.content,
+        }),
       });
+
+      if (response.ok) {
+        console.log('Nota enviada exitosamente');
+        // Realiza acciones adicionales si es necesario
+      } else {
+        console.error('Error al enviar la nota', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Error general al enviar la nota', error);
+    }
   };
 
-  const clearNotes = (event) => {
-    setNotes();
-  };
-
-
-
-// COSNT PARA LA CREACION DEL INSERT EN LA BD CON EL API
-    const [formData, setFormData] = useState({
-      UserID: '',
-      Title: '',
-      Content: ''
-    });
-
-    const handleChange = (e) => {
-      setFormData({...formData,[e.target.name]: e.target.value});
-    };
-
-
-    const handleReset = () => {
-      setFormData({
-        UserID: '',
-        Title: '',
-        Content: ''
-      });
-    };
-
-    const insertNoteToDB2 = () => {
-      axios
-      .post(`${urlDelApi}`, formData)
-      .then(function (response) {
-        // calling reset action
-        handleReset();
-      })
-        .then(function (response) {
-          // handle success
-          callAPINotes();
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-        .finally(function () {
-          // always executed
-        });
-    };
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      insertNoteToDB2(formData);
-    };
   return (
     <div className={styles.Home}>
-      <h1>{data}</h1>
+      <h1>{state.data}</h1>
       <Grid
         container
         spacing={2}
@@ -117,71 +84,55 @@ const Prueba = () => {
         }}
       >
         <Grid item xs={12}>
-          <h1>Autentiacion básica</h1>
+          <h1>Autenticacion básica</h1>
           <TextField
             id="outlined-basic"
             name="usuario"
             label="Outlined"
-            onChange={onChancheInput}
+            onChange={handleChange}
             variant="standard"
           />
           <TextField
             id="outlined-basic"
             name="password"
             type="password"
-            onChange={onChancheInput}
+            onChange={handleChange}
             label="Outlined"
             variant="standard"
           />
           <br/><br/><br/>
         </Grid>
 
-
-      <Grid item xs={5}>
+        <Grid item xs={5}>
           <h2>Insertar Nota en base de datos</h2>
-          <Grid item xs={2} style={{}}>
-          
-            <form onSubmit={handleSubmit}>
+          <Grid item xs={2}>
+            <form onSubmit={handleNoteSubmit}>
               <ul>
-                <label for="ID">ID:</label>
-                <input type="text"name="UserID" value={formData.UserID} onChange={handleChange}/>
+                <label htmlFor="ID">ID:</label>
+                <input type="text" name="UserID" value={state.formValues.UserID} onChange={handleChange}/>
                 <br/><br/>
 
-                <label for="Titulo">Título:</label>
-                <input type="text"name="Title" value={formData.Title} onChange={handleChange}/>
+                <label htmlFor="Titulo">Título:</label>
+                <input type="text" name="Title" value={state.formValues.Title} onChange={handleChange}/>
                 <br/><br/>
 
-                <label for="Contenido">Contenido:</label>
-                <input type="textarea"name="Content" value={formData.Content} onChange={handleChange}/>
+                <label htmlFor="Contenido">Contenido:</label>
+                <input type="textarea" name="Content" value={state.formValues.Content} onChange={handleChange}/>
                 <br/><br/>
-                <Button onClick={insertNoteToDB2} type="submit" variant="contained" sx={{ mx: 2 }}>Insertar API</Button>
+                <Button type="submit" variant="contained" sx={{ mx: 2 }}>Insertar API</Button>
               </ul>
             </form>
-      </Grid>
+          </Grid>
         </Grid>
 
-        <Grid item xs={6} style={{}}>
-       
-         
-          <Button onClick={clearNotes} color="secondary" variant="text">Limpiar</Button>
-          <br></br><br></br><br></br>
-
-      
-          <Button onClick={callAPINotes} variant="contained" sx={{ mx: 3 }}>Llamar API RED</Button>
-          <Button onClick={clearNotes} color="secondary" variant="text">Limpiar</Button>
-        </Grid>
-
-        <Grid item xs={12}>
-          {" "}
-        </Grid>
+        {/* Resto del código... */}
       </Grid>
 
-      <Card id="card-home" className={styles["card-home"]}>{console.log("por aca ando")}
+      <Card id="card-home" className={styles["card-home"]}>
         <Grid container spacing={2}>
-          {notes?.map((nota, index) => {
+          {state.notes?.map((nota, index) => {
             return (
-              <Grid item xs={4}>
-                {" "}
+              <Grid item xs={4} key={index}>
                 <Note titulo="titulo" note={nota}></Note>
               </Grid>
             );
@@ -192,6 +143,4 @@ const Prueba = () => {
   );
 };
 
-Prueba.propTypes = {};
-Prueba.defaultProps = {};
 export default Prueba;

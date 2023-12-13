@@ -14,31 +14,31 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useState } from 'react';
 import axios from 'axios';
 
+// ... (importaciones)
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    usuario: '',
+    usuario: '', // Cambiado de 'username' a 'usuario'
     password: '',
   });
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const urlDelApi = "http://localhost:8080/api/login";
+  const urlDelApi = "http://localhost:8080/api/login"; // Reemplaza con la URL de tu API
 
   const callAPIAuthenticate = (event) => {
     event.preventDefault();
-  
+
     const data = {
       UserName: formData.usuario,
       UserPassword: formData.password,
     };
-  
+
     axios
-    .post(urlDelApi,formData, {
+      .post(urlDelApi, data, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
@@ -46,79 +46,77 @@ const Login = () => {
       })
       .then(function (response) {
         console.log("data", response.data.records);
-        //localStorage.setItem("user", JSON.stringify(response.data.records[0]));
+        // localStorage.setItem("user", JSON.stringify(response.data.records[0]));
         window.location.href = "../main/";
       })
       .catch(function (error) {
         console.log(error);
       });
-      
   };
-  
-
-
-  
-
   const reset = () => {
     setFormData({ usuario: '', password: '' });
   };
-  
-  const defaultTheme = createTheme();
-  
-  
 
+  const defaultTheme = createTheme();
 
   return (
     <ThemeProvider theme={defaultTheme}>
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
 
-        <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="usuario"
-            label="Usuario"
-            type="text"
-            id="standard-basic"
-            value={formData.usuario}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Contraseña"
-            type="password"
-            id="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Recordar cuenta"
-          />
+          <form onSubmit={callAPIAuthenticate}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="usuario"
+              label="Usuario"
+              type="text"
+              id="standard-basic"
+              value={formData.usuario}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Contraseña"
+              type="password"
+              id="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Recordar cuenta"
+            />
 
-          <Button type="submit" fullWidth variant="contained" 
-          sx={{ mt: 3, mb: 2 }} name="btnIngresar" 
-          onClick={callAPIAuthenticate}>Iniciar Sesion
-          </Button>
-     
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              name="btnIngresar"
+            >
+              Iniciar Sesion
+            </Button>
+          </form>
+
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
@@ -131,13 +129,10 @@ const Login = () => {
               </Link>
             </Grid>
           </Grid>
-      </Box>
-    </Container>
-  </ThemeProvider>
-    
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 };
-
-Login.propTypes = {};
 
 export default Login;
