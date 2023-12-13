@@ -32,18 +32,10 @@ const Login = () => {
   const callAPIAuthenticate = (event) => {
     event.preventDefault();
 
-    const data = {
-      UserName: formData.usuario,
-      UserPassword: formData.password,
-    };
-
     axios
-      .post(urlDelApi, data, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      .post(
+        `${urlDelApi}?username=${formData.usuario}&password=${formData.password}`
+      )
       .then(function (response) {
         console.log("data", response.data.records);
         // localStorage.setItem("user", JSON.stringify(response.data.records[0]));
