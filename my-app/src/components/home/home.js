@@ -19,48 +19,61 @@ const App = () => {
       </AppBar>
       <div style={{ padding: '20px', marginTop: '60px' }}>
       <h2>Grupo Progra 3</h2>
-      <p><strong> + JOSE LEANDRO RUA RAMIREZ + JAVIER ALBERTO GARCIA SOLIS + ARMANDO ALONSO MONTIEL MONTES </strong></p>
-  <h3>Guía de métodos para el RestController:</h3>
-  <ol>
-    <li>
-      <p><strong> "/api" (GET):</strong> Descripción: Retorna un saludo simple "Hello, world!".</p>
-    </li>
-    <li>
-      <p><strong> "/api/allUsers" (GET):</strong> Descripción: Retorna una lista de todos los usuarios almacenados en la base de datos.</p>
-    </li>
-    <li>
-      <p><strong> "/api/allNotes" (GET):</strong> Descripción: Retorna una lista de todas las notas almacenadas en la base de datos.</p>
-    </li>
-    <li>
-      <p><strong> "/api/Ubyid" (GET):</strong> Descripción: Retorna un usuario específico según el ID proporcionado.</p>
-    </li>
-    <li>
-      <p><strong> "/api/Nbyid" (GET):</strong> Descripción: Retorna una nota específica según el ID proporcionado.</p>
-    </li>
-    <li>
-      <p><strong> "/api/UpdateUbyid" (PUT):</strong> Descripción: Actualiza la información de un usuario específico según el ID proporcionado.</p>
-    </li>
-    <li>
-      <p><strong> "/api/UpdateNbyid" (PUT):</strong> Descripción: Actualiza la información de una nota específica según el ID proporcionado.</p>
-    </li>
-    <li>
-      <p><strong> "/api/newuser" (POST):</strong> Descripción: Inserta un nuevo usuario en la base de datos.</p>
-    </li>
-    <li>
-      <p><strong> "/api/newnote" (POST):</strong> Descripción: Inserta una nueva nota en la base de datos.</p>
-    </li>
-    <li>
-      <p><strong> "/api/login" (POST):</strong> Descripción: Autentica a un usuario según el nombre de usuario y la contraseña proporcionados, y genera un token JWT para el usuario autenticado.</p>
-    </li>
-    <li>
-      <p><strong> "/api/DeleteUbyid" (DELETE):</strong> Descripción: Elimina un usuario específico de la base de datos según el ID proporcionado.</p>
-    </li>
-    <li>
-      <p><strong> "/api/DeleteNbyid" (DELETE):</strong> Descripción: Elimina una nota específica de la base de datos según el ID proporcionado.</p>
-    </li>
-  </ol>
-      </div>
-    </div>
+<p><strong> + JOSE LEANDRO RUA RAMIREZ + JAVIER ALBERTO GARCIA SOLIS + ARMANDO ALONSO MONTIEL MONTES </strong></p>
+<h3>Guía de métodos para el RestController:</h3>
+<p>
+            "/api" (GET): Descripción: Retorna un saludo simple "Hello, world!".
+</p>
+<p>
+            "/api/allUsers" (GET): Descripción: Retorna una lista de todos los usuarios almacenados en la base de datos.
+</p>
+<p>
+            "/api/allNotes" (GET): Descripción: Retorna una lista de todas las notas almacenadas en la base de datos.
+</p>
+<p>
+            "/api/Ubyid" (GET): Descripción: Retorna un usuario específico según el ID proporcionado.
+</p>
+<p>
+            "/api/Nbyid" (GET): Descripción: Retorna una nota específica según el ID proporcionado.
+</p>
+<p>
+            "/api/UpdateUbyid" (PUT): Descripción: Actualiza la información de un usuario específico según el ID proporcionado.
+</p>
+<p>
+            "/api/UpdateNbyid" (PUT): Descripción: Actualiza la información de una nota específica según el ID proporcionado.
+</p>
+<p>
+            "/api/newuser" (POST): Descripción: Inserta un nuevo usuario en la base de datos.
+</p>
+<p>
+            "/api/newnote" (POST): Descripción: Inserta una nueva nota en la base de datos.
+</p>
+<p>
+            "/api/login" (POST): Descripción: Autentica a un usuario según el nombre de usuario y la contraseña proporcionados, y genera un token JWT para el usuario autenticado.
+</p>
+<p>
+            "/api/DeleteUbyid" (DELETE): Descripción: Elimina un usuario específico de la base de datos según el ID proporcionado.
+</p>
+<p>
+            "/api/DeleteNbyid" (DELETE): Descripción: Elimina una nota específica de la base de datos según el ID proporcionado.
+</p>
+<h2>Grupo Progra 4</h2>
+<p><strong> + kEYLOR ALFARO MENA + ANTHONNY MONTOYA CHAVARRIA + JOSE CERDAS HERNANDEZ + FABIANA SANCHEZ CERVANTES + SEBASTIAN BARZUNA GARZA </strong></p>
+<h3>Guía de métodos para el FrontEnd:</h3>
+<p>
+            "/api/note" (POST): Descripción: Envia los datos de la nota.
+</p>
+<p>
+            "/api/Login" (POST): Descripción: Envia datos del login a la BD.
+</p>
+<p>
+            "/api/note" (GET): Descripción: Optiene datos de la nota del usuario.
+</p>
+<p>
+            "/api/note" (DELETE): Descripción: Elimina nota creada.
+</p>
+</div>
+</div>
   );
 };
 export default App;
